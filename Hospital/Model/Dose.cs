@@ -11,6 +11,12 @@ namespace Hospital.Model
             set;
         }
 
+        public int DosagemId
+        {
+            get;
+            set;
+        }
+
         [Required]
         public DateTime DataHora
         {

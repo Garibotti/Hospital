@@ -64,7 +64,7 @@ namespace Hospital.Controllers
                 return BadRequest();
             }
             if(prescricao.liberada){
-                Prescricao prescricaoPopulada = populaListaDeDoses(prescricao);
+                populaListaDeDoses(prescricao);//create doses and persist
             }
             /*var prescricaoDB =  _context.Prescricoes
                                              .Include(p=>p.Dosagens)
@@ -132,32 +132,22 @@ namespace Hospital.Controllers
             return Ok(prescricao);
         }
 
-        // LIBERAR: api/Prescricao/Liberar/5
-        [Authorize(Roles = "Medico")]
-        [HttpPost]
-        [Route("api/Prescricao/Liberar")]
-        public Task<IActionResult> LiberarPrescricao([FromBody] Prescricao prescricao){
-            Prescricao prescricaoPopulada = populaListaDeDoses(prescricao);
 
-            return PostPrescricao(prescricao);
-        }
-
-        private Prescricao populaListaDeDoses(Prescricao prescricao){
-            List<Dose> listaDoses = new List<Dose>();
+        private async void populaListaDeDoses(Prescricao prescricao){
             DateTime horarioDose;
             foreach (var dosagem in prescricao.Dosagens)
             {
                 horarioDose = dosagem.HorarioDeInicio;
-                while(prescricao.DataDeFim.Subtract(horarioDose).TotalHours > dosagem.Frequencia ){
+                while(prescricao.DataDeFim.Subtract(horarioDose).TotalHours >= dosagem.Frequencia ){
                     horarioDose = horarioDose.AddHours(dosagem.Frequencia);
                     Dose dose = new Dose(); 
                     dose.DataHora = horarioDose;
-                    listaDoses.Add(dose);
+                    dose.DosagemId = dosagem.ID;
+                    _context.Doses.Add(dose);
                 }
-                dosagem.Dose = listaDoses;
             }  
 
-            return prescricao;
+            await _context.SaveChangesAsync();
         }
 
 

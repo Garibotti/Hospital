@@ -11,7 +11,7 @@ using System;
 namespace Hospital.Migrations
 {
     [DbContext(typeof(HospitalContext))]
-    [Migration("20180416003209_InitialCreate")]
+    [Migration("20180418143344_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -61,11 +61,11 @@ namespace Hospital.Migrations
 
                     b.Property<DateTime>("DataHora");
 
-                    b.Property<int?>("DosagemID");
+                    b.Property<int>("DosagemId");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("DosagemID");
+                    b.HasIndex("DosagemId");
 
                     b.ToTable("Doses");
                 });
@@ -257,7 +257,8 @@ namespace Hospital.Migrations
                 {
                     b.HasOne("Hospital.Model.Dosagem")
                         .WithMany("Dose")
-                        .HasForeignKey("DosagemID");
+                        .HasForeignKey("DosagemId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

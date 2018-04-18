@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <Compile Remove="Controllers\ValuesController.cs" />
+    <Compile Remove="Migrations\20180416003209_InitialCreate.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="MvcContext.db" />

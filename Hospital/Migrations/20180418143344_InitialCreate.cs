@@ -201,17 +201,17 @@ namespace Hospital.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Administrada = table.Column<bool>(nullable: false),
                     DataHora = table.Column<DateTime>(nullable: false),
-                    DosagemID = table.Column<int>(nullable: true)
+                    DosagemId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Doses", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Doses_Dosagens_DosagemID",
-                        column: x => x.DosagemID,
+                        name: "FK_Doses_Dosagens_DosagemId",
+                        column: x => x.DosagemId,
                         principalTable: "Dosagens",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -257,9 +257,9 @@ namespace Hospital.Migrations
                 column: "PrescricaoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Doses_DosagemID",
+                name: "IX_Doses_DosagemId",
                 table: "Doses",
-                column: "DosagemID");
+                column: "DosagemId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

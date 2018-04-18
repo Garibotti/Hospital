@@ -54,7 +54,7 @@ namespace Hospital.Model
             set;
         }
 
-        public List<Dose> Dose
+        public virtual List<Dose> Dose
         {
             get;
             set;
